@@ -1,3 +1,5 @@
+// This program shows how you can use mmap to control memory access.
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -25,6 +27,10 @@ int main() {
 	ptr = mmap(NULL, sysconf(_SC_PAGE_SIZE), 0, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
 
 	ptr[0] = 0;
+
+	// MAP_FIXED forces the kernel to map an address range starting at the first argument, in this case: NULL.
+	// If you do this, NULL becomes a perfectly valid memory address to write to - no segfault.
+	// This needs sudo priveliges though.
 
 	// void* ptr = mmap(NULL, sysconf(_SC_PAGE_SIZE), PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_FIXED, -1, 0);
 	// printf("%p %s\n", ptr, strerror(errno));
